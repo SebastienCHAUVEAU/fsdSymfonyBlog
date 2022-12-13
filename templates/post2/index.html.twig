@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post index{% endblock %}
+
+{% block javascripts %}
+ <script defer src="{{asset('js/ajax.js')}}"></script>
+
+{% endblock %}
+
+
+{% block body %}
+    <h1>Post index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>LastName</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Image</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post in posts %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.lastName }}</td>
+                <td>{{ post.title }}</td>
+                <td>{{ post.content | striptags|replace({'&nbsp;': ''})|slice(0,50)}}</td>
+                <td>{{ post.image }}</td>
+                <td>{{ post.createdAt ? post.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ post.updatedAt ? post.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_post2_show', {'id': post.id}) }}">show</a>
+                    <a href="{{ path('app_post2_edit', {'id': post.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+
+        
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_post2_new') }}">Create new</a>
+    <a id="loadMoreButton" href="{{ path('api') }}">Show more</a>
+{% endblock %}
